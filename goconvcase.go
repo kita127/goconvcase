@@ -14,15 +14,20 @@ func Sample() {
 
 import (
 	"fmt"
-	"time"
+)
+
+const (
+    constVar = 100
 )
 
 // これは関数
 func bar() {
 
+    localVar := 99
+
     // 関数の中身
 
-	fmt.Println(time.Now())
+	fmt.Println(localVar + constVar)
 }`
 
 	fset := token.NewFileSet() // positions are relative to fset
