@@ -1,2 +1,2 @@
-# convert-case
-convert-case is a tool to convert cases.
+# goconvcase
+goconvcase is a tool to convert cases.
