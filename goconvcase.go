@@ -51,3 +51,7 @@ func bar() {
 	fmt.Println(buf.String())
 
 }
+
+func ConvertCase(src string) (string, error) {
+	return src, nil
+}
