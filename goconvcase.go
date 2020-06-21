@@ -15,9 +15,10 @@ const (
 	UpperCamel
 )
 
-// CaseType
+// CaseType type
 type CaseType int
 
+// Sample function
 func Sample() {
 	src := `package foo
 
@@ -61,6 +62,7 @@ func bar() {
 
 }
 
+// ConvertCase function
 func ConvertCase(src string, from, to CaseType) (string, error) {
 
 	res := `package hoge
