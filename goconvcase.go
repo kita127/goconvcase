@@ -18,6 +18,49 @@ const (
 // CaseType type
 type CaseType int
 
+// Converter struct
+type Converter struct {
+	from Case
+	to   Case
+}
+
+// InterCode struct
+type InterCode struct {
+	ss []string
+}
+
+// Case interface
+type Case interface {
+	Decode(ident string) *InterCode
+	Encode(ic *InterCode) string
+}
+
+// USnake struct
+type USnake struct{}
+
+// Decode *USnake.Decode method
+func (c *USnake) Decode(ident string) *InterCode {
+	return nil
+}
+
+// Encode *USnake.Encode method
+func (c *USnake) Encode(ic *InterCode) string {
+	return ""
+}
+
+// UCamel struct
+type UCamel struct{}
+
+// Decode *UCamel.Decode method
+func (c *UCamel) Decode(ident string) *InterCode {
+	return nil
+}
+
+// Encode *UCamel.Encode method
+func (c *UCamel) Encode(ic *InterCode) string {
+	return ""
+}
+
 // Sample function
 func Sample() {
 	src := `package foo
@@ -62,11 +105,43 @@ func bar() {
 
 }
 
+// NewConverter function
+func NewConverter(from, to CaseType) *Converter {
+	c := &Converter{}
+
+	switch from {
+	case UpperSnake:
+		c.from = &USnake{}
+	case UpperCamel:
+		c.from = &UCamel{}
+	}
+
+	switch to {
+	case UpperCamel:
+		c.to = &UCamel{}
+	case UpperSnake:
+		c.to = &USnake{}
+	}
+
+	return c
+}
+
+// Convert function
+func (c *Converter) Convert(src string) (string, error) {
+	return "", nil
+}
+
 // ConvertCase function
 func ConvertCase(src string, from, to CaseType) (string, error) {
 
 	res := `package hoge
 var HogeVar int`
+
+	c := NewConverter(from, to)
+	_, err := c.Convert(src)
+	if err != nil {
+		return "", err
+	}
 
 	return res, nil
 }
