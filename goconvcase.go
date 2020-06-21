@@ -126,9 +126,29 @@ func NewConverter(from, to CaseType) *Converter {
 	return c
 }
 
+// convertIdentifire method
+func (c *Converter) convertIdentifire(node *ast.File) *ast.File {
+	return node
+}
+
 // Convert function
 func (c *Converter) Convert(src string) (string, error) {
-	return "", nil
+	fset := token.NewFileSet() // positions are relative to fset
+
+	// Parse src but stop after processing the imports.
+	node, err := parser.ParseFile(fset, "", src, parser.ParseComments)
+	if err != nil {
+		return "", err
+	}
+	converted := c.convertIdentifire(node)
+
+	var buf bytes.Buffer
+	err = format.Node(&buf, fset, converted)
+	if err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
 }
 
 // ConvertCase function
