@@ -9,6 +9,15 @@ import (
 	"go/token"
 )
 
+// case type values
+const (
+	UpperSnake = iota
+	UpperCamel
+)
+
+// CaseType
+type CaseType int
+
 func Sample() {
 	src := `package foo
 
@@ -52,6 +61,10 @@ func bar() {
 
 }
 
-func ConvertCase(src string) (string, error) {
-	return src, nil
+func ConvertCase(src string, from, to CaseType) (string, error) {
+
+	res := `package hoge
+var HogeVar int`
+
+	return res, nil
 }

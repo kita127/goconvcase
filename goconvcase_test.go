@@ -10,11 +10,16 @@ func TestConvertCase(t *testing.T) {
 		src     string
 		expect  string
 	}{
-		{"test convert 1", `package hoge`, `package hoge`},
+		{"test convert 1",
+			`package hoge
+var HOGE_VAR int`,
+			`package hoge
+var HogeVar int`,
+		},
 	}
 
 	for _, tt := range testTbl {
-		got, err := ConvertCase(tt.src)
+		got, err := ConvertCase(tt.src, UpperSnake, UpperCamel)
 		if err != nil {
 			t.Error(err)
 		}
