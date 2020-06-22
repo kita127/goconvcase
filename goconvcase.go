@@ -147,8 +147,7 @@ func (c *Converter) convertIdentifire(node ast.Node) ast.Node {
 		}
 	case *ast.ValueSpec:
 		for _, ident := range node.(*ast.ValueSpec).Names {
-			ic := c.from.Decode(ident.Name)
-			ident.Name = c.to.Encode(ic)
+			c.convertIdentifire(ident)
 		}
 	case *ast.FuncDecl:
 		c.convertIdentifire(node.(*ast.FuncDecl).Name)
