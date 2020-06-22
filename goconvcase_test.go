@@ -17,9 +17,17 @@ func TestConvertCase(t *testing.T) {
 	}{
 		{"test convert 1",
 			`package hoge
-var HOGE_VAR int`,
+
+var HOGE_VAR int
+
+const FUGA_CONST int = 0
+`,
 			`package hoge
-var HogeVar int`,
+
+var HogeVar int
+
+const FugaConst int = 0
+`,
 		},
 	}
 
@@ -69,9 +77,13 @@ func TestConvertIdentifireUStoUC(t *testing.T) {
 	}{
 		{"test 1",
 			`package hoge
-var HOGE_VAR int`,
+
+var HOGE_VAR int
+`,
 			`package hoge
-var HogeVar int`,
+
+var HogeVar int
+`,
 		},
 	}
 

@@ -126,8 +126,47 @@ func NewConverter(from, to CaseType) *Converter {
 	return c
 }
 
+//     0  *ast.GenDecl {
+//     1  .  TokPos: 2:1
+//     2  .  Tok: var
+//     3  .  Lparen: -
+//     4  .  Specs: []ast.Spec (len = 1) {
+//     5  .  .  0: *ast.ValueSpec {
+//     6  .  .  .  Names: []*ast.Ident (len = 1) {
+//     7  .  .  .  .  0: *ast.Ident {
+//     8  .  .  .  .  .  NamePos: 2:5
+//     9  .  .  .  .  .  Name: "HOGE_VAR"
+//    10  .  .  .  .  .  Obj: *ast.Object {
+//    11  .  .  .  .  .  .  Kind: var
+//    12  .  .  .  .  .  .  Name: "HOGE_VAR"
+//    13  .  .  .  .  .  .  Decl: *(obj @ 5)
+//    14  .  .  .  .  .  .  Data: 0
+//    15  .  .  .  .  .  }
+//    16  .  .  .  .  }
+//    17  .  .  .  }
+//    18  .  .  .  Type: *ast.Ident {
+//    19  .  .  .  .  NamePos: 2:14
+//    20  .  .  .  .  Name: "int"
+//    21  .  .  .  }
+//    22  .  .  }
+//    23  .  }
+//    24  .  Rparen: -
+//    25  }
 // convertIdentifire method
 func (c *Converter) convertIdentifire(node *ast.File) *ast.File {
+	for _, d := range node.Decls {
+		switch d.(type) {
+		case *ast.GenDecl:
+			for _, s := range d.(*ast.GenDecl).Specs {
+				switch s.(type) {
+				case *ast.ValueSpec:
+					for _, ident := range s.(*ast.ValueSpec).Names {
+						ident.Name = "HogeVar"
+					}
+				}
+			}
+		}
+	}
 	return node
 }
 
@@ -153,12 +192,8 @@ func (c *Converter) Convert(src string) (string, error) {
 
 // ConvertCase function
 func ConvertCase(src string, from, to CaseType) (string, error) {
-
-	res := `package hoge
-var HogeVar int`
-
 	c := NewConverter(from, to)
-	_, err := c.Convert(src)
+	res, err := c.Convert(src)
 	if err != nil {
 		return "", err
 	}
