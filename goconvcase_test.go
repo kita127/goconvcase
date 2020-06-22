@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestConvertCase(t *testing.T) {
+func TestConvertCaseUStoUC(t *testing.T) {
 	testTbl := []struct {
 		comment string
 		src     string
