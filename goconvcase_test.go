@@ -15,10 +15,12 @@ func TestConvertCase(t *testing.T) {
 			`package hoge
 
 var HOGE_VAR int
+var FUGA_VAR int
 `,
 			`package hoge
 
 var HogeVar int
+var FugaVar int
 `,
 		},
 	}
@@ -59,6 +61,28 @@ func TestNewConverter(t *testing.T) {
 			t.Errorf("got=%v, expect=%v", got, tt.expect)
 		}
 	}
+}
+
+func TestUSnakeDecode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  *InterCode
+	}{
+		{"test 1",
+			`SNAKE_CASE_VAR`,
+			&InterCode{[]string{"snake", "case", "var"}},
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &USnake{}
+		got := c.Decode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
 }
 
 //func TestConvertIdentifireUStoUC(t *testing.T) {

@@ -7,6 +7,7 @@ import (
 	"go/format"
 	"go/parser"
 	"go/token"
+	"strings"
 )
 
 // case type values
@@ -31,7 +32,7 @@ type InterCode struct {
 
 // Case interface
 type Case interface {
-	Decode(ident string) *InterCode
+	Decode(name string) *InterCode
 	Encode(ic *InterCode) string
 }
 
@@ -39,8 +40,12 @@ type Case interface {
 type USnake struct{}
 
 // Decode *USnake.Decode method
-func (c *USnake) Decode(ident string) *InterCode {
-	return nil
+func (c *USnake) Decode(name string) *InterCode {
+	ic := &InterCode{}
+	for _, s := range strings.Split(name, "_") {
+		ic.ss = append(ic.ss, strings.ToLower(s))
+	}
+	return ic
 }
 
 // Encode *USnake.Encode method
@@ -52,7 +57,7 @@ func (c *USnake) Encode(ic *InterCode) string {
 type UCamel struct{}
 
 // Decode *UCamel.Decode method
-func (c *UCamel) Decode(ident string) *InterCode {
+func (c *UCamel) Decode(name string) *InterCode {
 	return nil
 }
 
@@ -138,7 +143,8 @@ func (c *Converter) convertIdentifire(node ast.Node) ast.Node {
 		}
 	case *ast.ValueSpec:
 		for _, ident := range node.(*ast.ValueSpec).Names {
-			ident.Name = "HogeVar"
+			ic := c.from.Decode(ident.Name)
+			ident.Name = c.to.Encode(ic)
 		}
 	}
 	return node
