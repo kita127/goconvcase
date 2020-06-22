@@ -150,6 +150,12 @@ func (c *Converter) convertIdentifire(node ast.Node) ast.Node {
 			ic := c.from.Decode(ident.Name)
 			ident.Name = c.to.Encode(ic)
 		}
+	case *ast.FuncDecl:
+		c.convertIdentifire(node.(*ast.FuncDecl).Name)
+	case *ast.Ident:
+		ident := node.(*ast.Ident)
+		ic := c.from.Decode(ident.Name)
+		ident.Name = c.to.Encode(ic)
 	}
 	return node
 }
@@ -163,6 +169,11 @@ func (c *Converter) Convert(src string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	// TODO:
+	// 最後けす
+	ast.Print(fset, node)
+
 	converted := c.convertIdentifire(node)
 
 	var buf bytes.Buffer

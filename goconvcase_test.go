@@ -16,11 +16,23 @@ func TestConvertCaseUStoUC(t *testing.T) {
 
 var HOGE_VAR int
 var FUGA_VAR int
+
+const CONST_VAR = 999
+
+func SILENCE_KID() {
+
+}
 `,
 			`package hoge
 
 var HogeVar int
 var FugaVar int
+
+const ConstVar = 999
+
+func SilenceKid() {
+
+}
 `,
 		},
 	}
