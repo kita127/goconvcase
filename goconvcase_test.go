@@ -20,7 +20,7 @@ var FUGA_VAR int
 const CONST_VAR = 999
 
 func SILENCE_KID() {
-
+	HIYOKO := "ひよこ"
 }
 `,
 			`package hoge
@@ -31,7 +31,7 @@ var FugaVar int
 const ConstVar = 999
 
 func SilenceKid() {
-
+	Hiyoko := "ひよこ"
 }
 `,
 		},
@@ -119,45 +119,3 @@ func TestUCamelEncode(t *testing.T) {
 
 }
 
-//func TestConvertIdentifireUStoUC(t *testing.T) {
-//	testTbl := []struct {
-//		comment string
-//		src     string
-//		expect  string
-//	}{
-//		{"test 1",
-//			`package hoge
-//
-//var HOGE_VAR int
-//`,
-//			`package hoge
-//
-//var HogeVar int
-//`,
-//		},
-//	}
-//
-//	for _, tt := range testTbl {
-//		c := NewConverter(UpperSnake, UpperCamel)
-//
-//		fset := token.NewFileSet() // positions are relative to fset
-//
-//		// Parse src but stop after processing the imports.
-//		node, err := parser.ParseFile(fset, "", tt.src, parser.ParseComments)
-//		if err != nil {
-//			t.Error(err)
-//		}
-//
-//		got := c.convertIdentifire(node)
-//
-//		var buf bytes.Buffer
-//		err = format.Node(&buf, fset, got)
-//		if err != nil {
-//			t.Error(err)
-//		}
-//
-//		if buf.String() != tt.expect {
-//			t.Errorf("got=%s, expect=%s", buf.String(), tt.expect)
-//		}
-//	}
-//}
