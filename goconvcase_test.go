@@ -85,6 +85,28 @@ func TestUSnakeDecode(t *testing.T) {
 
 }
 
+func TestUCamelEncode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   *InterCode
+		expect  string
+	}{
+		{"test 1",
+			&InterCode{[]string{"snake", "case", "var"}},
+			`SnakeCaseVar`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &UCamel{}
+		got := c.Encode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
+
 //func TestConvertIdentifireUStoUC(t *testing.T) {
 //	testTbl := []struct {
 //		comment string

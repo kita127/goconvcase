@@ -63,7 +63,11 @@ func (c *UCamel) Decode(name string) *InterCode {
 
 // Encode *UCamel.Encode method
 func (c *UCamel) Encode(ic *InterCode) string {
-	return ""
+	ss := []string{}
+	for _, s := range ic.ss {
+		ss = append(ss, strings.Title(s))
+	}
+	return strings.Join(ss, "")
 }
 
 // Sample function
