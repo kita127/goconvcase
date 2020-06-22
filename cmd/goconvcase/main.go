@@ -1,10 +1,20 @@
 package main
 
 import (
-	"github.com/kita127/goconvcase"
+	"fmt"
+
+	conv "github.com/kita127/goconvcase"
 )
 
 func main() {
 
-	goconvcase.Sample()
+	src := `package hoge
+var SNAKE_CASE_VAR int`
+
+	res, err := conv.ConvertCase(src, conv.UpperSnake, conv.UpperCamel)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(res)
 }
