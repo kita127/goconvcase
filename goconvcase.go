@@ -2,6 +2,7 @@ package goconvcase
 
 import (
 	"bytes"
+	"fmt"
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -33,6 +34,7 @@ type InterCode struct {
 type Case interface {
 	Decode(name string) *InterCode
 	Encode(ic *InterCode) string
+	IsThisCase(name string) bool
 }
 
 // USnake struct
@@ -52,6 +54,15 @@ func (c *USnake) Encode(ic *InterCode) string {
 	return ""
 }
 
+// IsThisCase *USnake.IsThisCase method
+func (c *USnake) IsThisCase(name string) bool {
+	ss := strings.Split(name, "_")
+	if len(ss) > 1 {
+		return true
+	}
+	return false
+}
+
 // UCamel struct
 type UCamel struct{}
 
@@ -67,6 +78,13 @@ func (c *UCamel) Encode(ic *InterCode) string {
 		ss = append(ss, strings.Title(s))
 	}
 	return strings.Join(ss, "")
+}
+
+// IsThisCase *UCamel.IsThisCase method
+func (c *UCamel) IsThisCase(name string) bool {
+	// TODO
+	panic(fmt.Errorf("UCamel.IsThisCase 未実装"))
+	return false
 }
 
 // NewConverter function
@@ -91,36 +109,17 @@ func NewConverter(from, to CaseType) *Converter {
 }
 
 func (c *Converter) convertIdentifire(node ast.Node) ast.Node {
-	switch node.(type) {
-	case *ast.File:
-		for _, n := range node.(*ast.File).Decls {
-			c.convertIdentifire(n)
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch n.(type) {
+		case *ast.Ident:
+			ident := n.(*ast.Ident)
+			if c.from.IsThisCase(ident.Name) {
+				ic := c.from.Decode(ident.Name)
+				ident.Name = c.to.Encode(ic)
+			}
 		}
-	case *ast.GenDecl:
-		for _, n := range node.(*ast.GenDecl).Specs {
-			c.convertIdentifire(n)
-		}
-	case *ast.ValueSpec:
-		for _, ident := range node.(*ast.ValueSpec).Names {
-			c.convertIdentifire(ident)
-		}
-	case *ast.FuncDecl:
-		f := node.(*ast.FuncDecl)
-		c.convertIdentifire(f.Name)
-		c.convertIdentifire(f.Body)
-	case *ast.BlockStmt:
-		for _, s := range node.(*ast.BlockStmt).List {
-			c.convertIdentifire(s)
-		}
-	case *ast.AssignStmt:
-		for _, l := range node.(*ast.AssignStmt).Lhs {
-			c.convertIdentifire(l)
-		}
-	case *ast.Ident:
-		ident := node.(*ast.Ident)
-		ic := c.from.Decode(ident.Name)
-		ident.Name = c.to.Encode(ic)
-	}
+		return true
+	})
 	return node
 }
 

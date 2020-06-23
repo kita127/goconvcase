@@ -16,6 +16,7 @@ func TestConvertCaseUStoUC(t *testing.T) {
 
 var HOGE_VAR int
 var FUGA_VAR int
+var camelVar int
 
 const CONST_VAR = 999
 
@@ -27,11 +28,12 @@ func SILENCE_KID() {
 
 var HogeVar int
 var FugaVar int
+var camelVar int
 
 const ConstVar = 999
 
 func SilenceKid() {
-	Hiyoko := "ひよこ"
+	HIYOKO := "ひよこ"
 }
 `,
 		},
@@ -119,3 +121,40 @@ func TestUCamelEncode(t *testing.T) {
 
 }
 
+func TestUSnakeIsThisCase(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  bool
+	}{
+		{"test 1",
+			`SNAKE_CASE_VAR`,
+			true,
+		},
+		{"test 2",
+			`CamelCaseVar`,
+			false,
+		},
+		{"test 3",
+			`camelCaseVar`,
+			false,
+		},
+		{"test 4",
+			`UPPER`,
+			false,
+		},
+		{"test 5",
+			`lower`,
+			false,
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &USnake{}
+		got := c.IsThisCase(tt.input)
+		if got != tt.expect {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
