@@ -8,6 +8,7 @@ import (
 	"go/parser"
 	"go/token"
 	"strings"
+	"unicode"
 )
 
 // case type values
@@ -58,6 +59,12 @@ func (c *USnake) Encode(ic *InterCode) string {
 func (c *USnake) IsThisCase(name string) bool {
 	ss := strings.Split(name, "_")
 	if len(ss) > 1 {
+		s := strings.Join(ss, "")
+		for _, c := range []rune(s) {
+			if !unicode.IsUpper(c) {
+				return false
+			}
+		}
 		return true
 	}
 	return false
