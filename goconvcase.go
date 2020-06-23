@@ -140,10 +140,6 @@ func (c *Converter) Convert(src string) (string, error) {
 		return "", err
 	}
 
-	// TODO:
-	// 最後けす
-	ast.Print(fset, node)
-
 	converted := c.convertIdentifire(node)
 
 	var buf bytes.Buffer
