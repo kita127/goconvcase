@@ -105,7 +105,17 @@ func (c *Converter) convertIdentifire(node ast.Node) ast.Node {
 			c.convertIdentifire(ident)
 		}
 	case *ast.FuncDecl:
-		c.convertIdentifire(node.(*ast.FuncDecl).Name)
+		f := node.(*ast.FuncDecl)
+		c.convertIdentifire(f.Name)
+		c.convertIdentifire(f.Body)
+	case *ast.BlockStmt:
+		for _, s := range node.(*ast.BlockStmt).List {
+			c.convertIdentifire(s)
+		}
+	case *ast.AssignStmt:
+		for _, l := range node.(*ast.AssignStmt).Lhs {
+			c.convertIdentifire(l)
+		}
 	case *ast.Ident:
 		ident := node.(*ast.Ident)
 		ic := c.from.Decode(ident.Name)
