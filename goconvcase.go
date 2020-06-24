@@ -59,6 +59,9 @@ func (c *USnake) Encode(ic *InterCode) string {
 
 // IsThisCase *USnake.IsThisCase method
 func (c *USnake) IsThisCase(name string) bool {
+	if name == "_" {
+		return false
+	}
 	ss := strings.Split(name, "_")
 	if len(ss) > 1 {
 		s := strings.Join(ss, "")

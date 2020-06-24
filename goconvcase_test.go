@@ -151,12 +151,17 @@ func TestUSnakeIsThisCase(t *testing.T) {
 			`lower`,
 			false,
 		},
+		{"test 7",
+			`_`,
+			false,
+		},
 	}
 
 	for _, tt := range testTbl {
 		c := &USnake{}
 		got := c.IsThisCase(tt.input)
 		if got != tt.expect {
+			t.Logf("%s", tt.comment)
 			t.Errorf("got=%v, expect=%v", got, tt.expect)
 		}
 	}
