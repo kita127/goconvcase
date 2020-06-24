@@ -10,13 +10,13 @@ import (
 )
 
 var (
-	file = kingpin.Arg("file", "go file").Required().String()
+	path = kingpin.Arg("path", "go file path").Required().String()
 )
 
 func main() {
 	kingpin.Parse()
 
-	src, err := ioutil.ReadFile(*file)
+	src, err := ioutil.ReadFile(*path)
 	if err != nil {
 		log.Fatal(err)
 	}
