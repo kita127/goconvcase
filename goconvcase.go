@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"go/ast"
+	"go/format"
 	"go/parser"
-	"go/printer"
 	"go/token"
 	"strings"
 	"unicode"
@@ -150,7 +150,7 @@ func (c *Converter) Convert(src string) (string, error) {
 	converted := c.convertIdentifire(node)
 
 	var buf bytes.Buffer
-	err = printer.Fprint(&buf, fset, converted)
+	err = format.Node(&buf, fset, converted)
 	if err != nil {
 		return "", err
 	}
