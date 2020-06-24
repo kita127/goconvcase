@@ -52,6 +52,8 @@ func (c *USnake) Decode(name string) *InterCode {
 
 // Encode *USnake.Encode method
 func (c *USnake) Encode(ic *InterCode) string {
+	// TODO
+	panic(fmt.Errorf("USnake.Encode() 未実装"))
 	return ""
 }
 
@@ -75,6 +77,8 @@ type UCamel struct{}
 
 // Decode *UCamel.Decode method
 func (c *UCamel) Decode(name string) *InterCode {
+	// TODO
+	panic(fmt.Errorf("UCamel.Decode() 未実装"))
 	return nil
 }
 
