@@ -10,6 +10,7 @@ import (
 )
 
 var (
+	wf   = kingpin.Flag("write", "write result to (source) file instead of stdout").Short('w').Bool()
 	path = kingpin.Arg("path", "go file path").Required().String()
 )
 
@@ -26,5 +27,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(res)
+	if *wf {
+		err = ioutil.WriteFile(*path, []byte(res), 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		fmt.Println(res)
+	}
 }
