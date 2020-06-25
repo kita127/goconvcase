@@ -12,6 +12,8 @@ import (
 var (
 	wf   = kingpin.Flag("write", "write result to (source) file instead of stdout").Short('w').Bool()
 	path = kingpin.Arg("path", "go file path").Required().String()
+	from = kingpin.Flag("from", "from case").Short('f').Required().String()
+	to   = kingpin.Flag("to", "to case").Short('t').Required().String()
 )
 
 func main() {
@@ -22,7 +24,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := conv.ConvertCase(string(src), conv.UpperSnake, conv.UpperCamel)
+	f, err := validateCase(*from)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	t, err := validateCase(*to)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := conv.ConvertCase(string(src), f, t)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,4 +47,15 @@ func main() {
 	} else {
 		fmt.Println(res)
 	}
+}
+
+func validateCase(s string) (conv.CaseType, error) {
+	switch s {
+	case "US":
+		return conv.UpperSnake, nil
+	case "UC":
+		return conv.UpperCamel, nil
+	}
+
+	return -1, fmt.Errorf("invalid case. please enter : goconvcase --list")
 }
