@@ -5,6 +5,51 @@ import (
 	"testing"
 )
 
+func TestConvertCaseLStoLC(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		src     string
+		expect  string
+	}{
+		{"test convert 1",
+			`package hoge
+
+var hoge_var int
+var fuga_var int
+var camelVar int
+
+const const_var = 999
+
+func silence_kid() {
+	hiyoko := "ひよこ"
+}
+`,
+			`package hoge
+
+var hogeVar int
+var fugaVar int
+var camelVar int
+
+const constVar = 999
+
+func silenceKid() {
+	hiyoko := "ひよこ"
+}
+`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		got, err := ConvertCase(tt.src, LowerSnake, LowerCamel)
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.expect {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+}
+
 func TestConvertCaseUStoUC(t *testing.T) {
 	testTbl := []struct {
 		comment string
@@ -99,6 +144,28 @@ func TestUSnakeDecode(t *testing.T) {
 
 }
 
+func TestLSnakeDecode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  *InterCode
+	}{
+		{"test 1",
+			`snake_case_var`,
+			&InterCode{[]string{"snake", "case", "var"}},
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &USnake{}
+		got := c.Decode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
+
 func TestUCamelEncode(t *testing.T) {
 	testTbl := []struct {
 		comment string
@@ -159,6 +226,53 @@ func TestUSnakeIsThisCase(t *testing.T) {
 
 	for _, tt := range testTbl {
 		c := &USnake{}
+		got := c.IsThisCase(tt.input)
+		if got != tt.expect {
+			t.Logf("%s", tt.comment)
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
+
+func TestLSnakeIsThisCase(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  bool
+	}{
+		{"test 1",
+			`SNAKE_CASE_VAR`,
+			false,
+		},
+		{"test 2",
+			`snake_case_var`,
+			true,
+		},
+		{"test 3",
+			`CamelCaseVar`,
+			false,
+		},
+		{"test 4",
+			`camelCaseVar`,
+			false,
+		},
+		{"test 5",
+			`UPPER`,
+			false,
+		},
+		{"test 6",
+			`lower`,
+			false,
+		},
+		{"test 7",
+			`_`,
+			false,
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &LSnake{}
 		got := c.IsThisCase(tt.input)
 		if got != tt.expect {
 			t.Logf("%s", tt.comment)

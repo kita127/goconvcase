@@ -15,6 +15,8 @@ import (
 const (
 	UpperSnake = iota
 	UpperCamel
+	LowerSnake
+	LowerCamel
 )
 
 // CaseType type
@@ -101,25 +103,88 @@ func (c *UCamel) IsThisCase(name string) bool {
 	return false
 }
 
+// LSnake struct
+type LSnake struct{}
+
+// Decode *LSnake.Decode method
+func (c *LSnake) Decode(name string) *InterCode {
+	ic := &InterCode{}
+	for _, s := range strings.Split(name, "_") {
+		ic.ss = append(ic.ss, strings.ToLower(s))
+	}
+	return ic
+}
+
+// Encode *LSnake.Encode method
+func (c *LSnake) Encode(ic *InterCode) string {
+	// TODO
+	panic(fmt.Errorf("LSnake.Encode() 未実装"))
+	return ""
+}
+
+// IsThisCase *LSnake.IsThisCase method
+func (c *LSnake) IsThisCase(name string) bool {
+	if name == "_" {
+		return false
+	}
+	ss := strings.Split(name, "_")
+	if len(ss) > 1 {
+		s := strings.Join(ss, "")
+		for _, c := range []rune(s) {
+			if !unicode.IsLower(c) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
+// LCamel struct
+type LCamel struct{}
+
+// Decode *LCamel.Decode method
+func (c *LCamel) Decode(name string) *InterCode {
+	// TODO
+	panic(fmt.Errorf("LCamel.Decode() 未実装"))
+	return nil
+}
+
+// Encode *LCamel.Encode method
+func (c *LCamel) Encode(ic *InterCode) string {
+	ss := []string{}
+	ss = append(ss, ic.ss[0])
+	for _, s := range ic.ss[1:] {
+		ss = append(ss, strings.Title(s))
+	}
+	return strings.Join(ss, "")
+}
+
+// IsThisCase *LSnake.IsThisCase method
+func (c *LCamel) IsThisCase(name string) bool {
+	// TODO
+	panic(fmt.Errorf("LCamel.IsThisCase 未実装"))
+	return false
+}
+
 // NewConverter function
 func NewConverter(from, to CaseType) *Converter {
-	c := &Converter{}
+	return &Converter{from: newCase(from), to: newCase(to)}
+}
 
-	switch from {
+// newCase function
+func newCase(c CaseType) Case {
+	switch c {
 	case UpperSnake:
-		c.from = &USnake{}
+		return &USnake{}
 	case UpperCamel:
-		c.from = &UCamel{}
+		return &UCamel{}
+	case LowerSnake:
+		return &LSnake{}
+	case LowerCamel:
+		return &LCamel{}
 	}
-
-	switch to {
-	case UpperCamel:
-		c.to = &UCamel{}
-	case UpperSnake:
-		c.to = &USnake{}
-	}
-
-	return c
+	return nil
 }
 
 func (c *Converter) convertIdentifire(node ast.Node) ast.Node {

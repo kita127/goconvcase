@@ -14,6 +14,8 @@ import (
 const (
 	US string = "us"
 	UC string = "uc"
+	LS string = "ls"
+	LC string = "lc"
 )
 
 var (
@@ -72,6 +74,10 @@ func validateCase(s string) (conv.CaseType, error) {
 		return conv.UpperSnake, nil
 	case UC:
 		return conv.UpperCamel, nil
+	case LS:
+		return conv.LowerSnake, nil
+	case LC:
+		return conv.LowerCamel, nil
 	}
 
 	return -1, fmt.Errorf("goconvcase.exe: error: invalid case , try --help or --list")
