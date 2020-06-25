@@ -10,6 +10,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+// constant value
 const (
 	US string = "us"
 	UC string = "uc"
