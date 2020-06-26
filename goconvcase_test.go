@@ -5,112 +5,7 @@ import (
 	"testing"
 )
 
-func TestConvertCaseLStoLC(t *testing.T) {
-	testTbl := []struct {
-		comment string
-		src     string
-		expect  string
-	}{
-		{"test convert 1",
-			`package hoge
-
-var hoge_var int
-var fuga_var int
-var camelVar int
-
-const const_var = 999
-
-func silence_kid() {
-	hiyoko := "ひよこ"
-	xxx_ := 20
-	_yyy := 30
-}
-`,
-			`package hoge
-
-var hogeVar int
-var fugaVar int
-var camelVar int
-
-const constVar = 999
-
-func silenceKid() {
-	hiyoko := "ひよこ"
-	xxx_ := 20
-	_yyy := 30
-}
-`,
-		},
-	}
-
-	for _, tt := range testTbl {
-		got, err := ConvertCase(tt.src, LowerSnake, LowerCamel)
-		if err != nil {
-			t.Error(err)
-		}
-		if got != tt.expect {
-			t.Errorf("got=%v, expect=%v", got, tt.expect)
-		}
-	}
-}
-
-func TestConvertCaseUStoUC(t *testing.T) {
-	testTbl := []struct {
-		comment string
-		src     string
-		expect  string
-	}{
-		{"test convert 1",
-			`package hoge
-
-var HOGE_VAR int
-var FUGA_VAR int
-var camelVar int
-
-const CONST_VAR = 999
-
-func SILENCE_KID() {
-	HIYOKO := "ひよこ"
-	XXX_ := 20
-	_YYY := 30
-}
-`,
-			`package hoge
-
-var HogeVar int
-var FugaVar int
-var camelVar int
-
-const ConstVar = 999
-
-func SilenceKid() {
-	HIYOKO := "ひよこ"
-	XXX_ := 20
-	_YYY := 30
-}
-`,
-		},
-	}
-
-	for _, tt := range testTbl {
-		got, err := ConvertCase(tt.src, UpperSnake, UpperCamel)
-		if err != nil {
-			t.Error(err)
-		}
-		if got != tt.expect {
-			t.Errorf("got=%v, expect=%v", got, tt.expect)
-		}
-	}
-}
-
-func TestConvertCaseUCtoUS(t *testing.T) {
-	testTbl := []struct {
-		comment string
-		src     string
-		expect  string
-	}{
-		{"test convert 1",
-			`package hoge
+const inputSrc string = `package hoge
 
 var UPPER_SNAKE_VAR int
 var lower_snake_var int
@@ -137,7 +32,116 @@ func UpperCamelFunc() {
 func lowerCamelFunc() {
 	localVar := 0
 }
+`
+
+func TestConvertCaseLStoLC(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		src     string
+		expect  string
+	}{
+		{"test convert 1",
+			inputSrc,
+			`package hoge
+
+var UPPER_SNAKE_VAR int
+var lowerSnakeVar int
+var UpperCamelVar int
+var lowerCamelVar int
+
+const UPPER_SNAKE_CONST int = 0
+const lowerSnakeConst int = 0
+const UpperCamelConst int = 0
+const lowerCamelConst int = 0
+
+func UPPER_SNAKE_FUNC() {
+	LOCAL_VAR := 0
+}
+
+func lowerSnakeFunc() {
+	localVar := 0
+}
+
+func UpperCamelFunc() {
+	LocalVar := 0
+}
+
+func lowerCamelFunc() {
+	localVar := 0
+}
 `,
+		},
+	}
+
+	for _, tt := range testTbl {
+		got, err := ConvertCase(tt.src, LowerSnake, LowerCamel)
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.expect {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+}
+
+func TestConvertCaseUStoUC(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		src     string
+		expect  string
+	}{
+		{"test convert 1",
+			inputSrc,
+			`package hoge
+
+var UpperSnakeVar int
+var lower_snake_var int
+var UpperCamelVar int
+var lowerCamelVar int
+
+const UpperSnakeConst int = 0
+const lower_snake_const int = 0
+const UpperCamelConst int = 0
+const lowerCamelConst int = 0
+
+func UpperSnakeFunc() {
+	LocalVar := 0
+}
+
+func lower_snake_func() {
+	local_var := 0
+}
+
+func UpperCamelFunc() {
+	LocalVar := 0
+}
+
+func lowerCamelFunc() {
+	localVar := 0
+}
+`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		got, err := ConvertCase(tt.src, UpperSnake, UpperCamel)
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.expect {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+}
+
+func TestConvertCaseUCtoUS(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		src     string
+		expect  string
+	}{
+		{"test convert 1",
+			inputSrc,
 			`package hoge
 
 var UPPER_SNAKE_VAR int
