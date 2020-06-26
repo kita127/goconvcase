@@ -207,6 +207,27 @@ func TestNewConverter(t *testing.T) {
 	}
 }
 
+func TestUSnakeEncode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   *InterCode
+		expect  string
+	}{
+		{"test 1",
+			&InterCode{[]string{"snake", "case", "var"}},
+			`SNAKE_CASE_VAR`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &USnake{}
+		got := c.Encode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
 func TestUSnakeDecode(t *testing.T) {
 	testTbl := []struct {
 		comment string
@@ -266,6 +287,28 @@ func TestUCamelEncode(t *testing.T) {
 	for _, tt := range testTbl {
 		c := &UCamel{}
 		got := c.Encode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
+
+func TestUCamelDecode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  *InterCode
+	}{
+		{"test 1",
+			`CamelCaseVar`,
+			&InterCode{[]string{"camel", "case", "var"}},
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &UCamel{}
+		got := c.Decode(tt.input)
 		if !reflect.DeepEqual(got, tt.expect) {
 			t.Errorf("got=%v, expect=%v", got, tt.expect)
 		}

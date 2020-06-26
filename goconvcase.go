@@ -54,9 +54,11 @@ func (c *USnake) Decode(name string) *InterCode {
 
 // Encode *USnake.Encode method
 func (c *USnake) Encode(ic *InterCode) string {
-	// TODO
-	//panic(fmt.Errorf("USnake.Encode() 未実装"))
-	return ""
+	tmp := []string{}
+	for _, v := range ic.ss {
+		tmp = append(tmp, strings.ToUpper(v))
+	}
+	return strings.Join(tmp, "_")
 }
 
 // IsThisCase *USnake.IsThisCase method
@@ -85,9 +87,22 @@ type UCamel struct{}
 
 // Decode *UCamel.Decode method
 func (c *UCamel) Decode(name string) *InterCode {
-	// TODO
-	//panic(fmt.Errorf("UCamel.Decode() 未実装"))
-	return nil
+	s := []rune(name)
+	head := 0
+	last := 1
+	ic := &InterCode{}
+	for _, c := range s[1:] {
+		if unicode.IsUpper(c) {
+			word := strings.ToLower(string(s[head:last]))
+			head = last
+			ic.ss = append(ic.ss, string(word))
+		}
+		last++
+	}
+	word := strings.ToLower(string(s[head:last]))
+	ic.ss = append(ic.ss, string(word))
+
+	return ic
 }
 
 // Encode *UCamel.Encode method
