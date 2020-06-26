@@ -316,116 +316,6 @@ func TestUCamelDecode(t *testing.T) {
 
 }
 
-func TestUSnakeIsThisCase(t *testing.T) {
-	testTbl := []struct {
-		comment string
-		input   string
-		expect  bool
-	}{
-		{"SNAKE_CASE_VAR",
-			`SNAKE_CASE_VAR`,
-			true,
-		},
-		{"snake_case_var",
-			`snake_case_var`,
-			false,
-		},
-		{"CamelCaseVar",
-			`CamelCaseVar`,
-			false,
-		},
-		{"camelCaseVar",
-			`camelCaseVar`,
-			false,
-		},
-		{"UPPER",
-			`UPPER`,
-			false,
-		},
-		{"lower",
-			`lower`,
-			false,
-		},
-		{"_HOGE_VAR",
-			`_HOGE`,
-			false,
-		},
-		{"HOGE_VAR_",
-			`HOGE_`,
-			false,
-		},
-		{"_",
-			`_`,
-			false,
-		},
-	}
-
-	for _, tt := range testTbl {
-		c := &USnake{}
-		got := c.IsThisCase(tt.input)
-		if got != tt.expect {
-			t.Logf("%s", tt.comment)
-			t.Errorf("got=%v, expect=%v", got, tt.expect)
-		}
-	}
-
-}
-
-func TestLSnakeIsThisCase(t *testing.T) {
-	testTbl := []struct {
-		comment string
-		input   string
-		expect  bool
-	}{
-		{"SNAKE_CASE_VAR",
-			`SNAKE_CASE_VAR`,
-			false,
-		},
-		{"snake_case_var",
-			`snake_case_var`,
-			true,
-		},
-		{"CamelCaseVar",
-			`CamelCaseVar`,
-			false,
-		},
-		{"camelCaseVar",
-			`camelCaseVar`,
-			false,
-		},
-		{"UPPER",
-			`UPPER`,
-			false,
-		},
-		{"lower",
-			`lower`,
-			false,
-		},
-		{"hoge_var_",
-			`hoge_var_`,
-			false,
-		},
-		{"_hoge_var",
-			`_hoge_var`,
-			false,
-		},
-		{"_",
-			`_`,
-			false,
-		},
-	}
-
-	for _, tt := range testTbl {
-		c := &LSnake{}
-		got := c.IsThisCase(tt.input)
-		if got != tt.expect {
-			t.Logf("%s", tt.comment)
-			t.Errorf("got=%v, expect=%v", got, tt.expect)
-		}
-	}
-
-}
-
 func TestIsThisCase(t *testing.T) {
 	inputTbl := []string{
 		"SNAKE_CASE_VAR",
@@ -446,6 +336,44 @@ func TestIsThisCase(t *testing.T) {
 		cs      Case
 		expects []bool
 	}{
+		{
+			"Is this UpperSnake?",
+			&USnake{},
+			[]bool{
+				true,  //   "SNAKE_CASE_VAR"
+				false, //   "snake_case_var"
+				false, //   "CamelCaseVar"
+				false, //   "camelCaseVar"
+				false, //   "UPPER"
+				false, //   "lower"
+				false, //   "HOGE_VAR_"
+				false, //   "_HOGE_VAR"
+				false, //   "hoge_var_"
+				false, //   "_hoge_var"
+				false, //   "C"
+				false, //   "c"
+				false, //   "_"
+			},
+		},
+		{
+			"Is this LowerSnake?",
+			&LSnake{},
+			[]bool{
+				false, //   "SNAKE_CASE_VAR"
+				true,  //   "snake_case_var"
+				false, //   "CamelCaseVar"
+				false, //   "camelCaseVar"
+				false, //   "UPPER"
+				false, //   "lower"
+				false, //   "HOGE_VAR_"
+				false, //   "_HOGE_VAR"
+				false, //   "hoge_var_"
+				false, //   "_hoge_var"
+				false, //   "C"
+				false, //   "c"
+				false, //   "_"
+			},
+		},
 		{
 			"Is this UpperCamel?",
 			&UCamel{},
