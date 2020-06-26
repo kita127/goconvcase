@@ -131,6 +131,9 @@ func (c *LSnake) IsThisCase(name string) bool {
 		return false
 	}
 	ss := strings.Split(name, "_")
+	if ss[0] == "" || ss[len(ss)-1] == "" {
+		return false
+	}
 	if len(ss) > 1 {
 		s := strings.Join(ss, "")
 		for _, c := range []rune(s) {
