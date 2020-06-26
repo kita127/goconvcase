@@ -55,7 +55,7 @@ func (c *USnake) Decode(name string) *InterCode {
 // Encode *USnake.Encode method
 func (c *USnake) Encode(ic *InterCode) string {
 	// TODO
-	panic(fmt.Errorf("USnake.Encode() 未実装"))
+	//panic(fmt.Errorf("USnake.Encode() 未実装"))
 	return ""
 }
 
@@ -86,7 +86,7 @@ type UCamel struct{}
 // Decode *UCamel.Decode method
 func (c *UCamel) Decode(name string) *InterCode {
 	// TODO
-	panic(fmt.Errorf("UCamel.Decode() 未実装"))
+	//panic(fmt.Errorf("UCamel.Decode() 未実装"))
 	return nil
 }
 
@@ -101,8 +101,14 @@ func (c *UCamel) Encode(ic *InterCode) string {
 
 // IsThisCase *UCamel.IsThisCase method
 func (c *UCamel) IsThisCase(name string) bool {
-	// TODO
-	panic(fmt.Errorf("UCamel.IsThisCase 未実装"))
+	if len([]byte(name)) <= 1 {
+		return false
+	}
+	first := []rune(name)[0]
+	second := []rune(name)[1]
+	if unicode.IsUpper(first) && unicode.IsLower(second) {
+		return true
+	}
 	return false
 }
 
