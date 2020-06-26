@@ -304,6 +304,27 @@ func TestUSnakeDecode(t *testing.T) {
 
 }
 
+func TestLSnakeEncode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   *InterCode
+		expect  string
+	}{
+		{"test 1",
+			&InterCode{[]string{"snake", "case", "var"}},
+			`snake_case_var`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &LSnake{}
+		got := c.Encode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
 func TestLSnakeDecode(t *testing.T) {
 	testTbl := []struct {
 		comment string
@@ -362,6 +383,28 @@ func TestUCamelDecode(t *testing.T) {
 
 	for _, tt := range testTbl {
 		c := &UCamel{}
+		got := c.Decode(tt.input)
+		if !reflect.DeepEqual(got, tt.expect) {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+
+}
+
+func TestLCamelDecode(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		input   string
+		expect  *InterCode
+	}{
+		{"test 1",
+			`camelCaseVar`,
+			&InterCode{[]string{"camel", "case", "var"}},
+		},
+	}
+
+	for _, tt := range testTbl {
+		c := &LCamel{}
 		got := c.Decode(tt.input)
 		if !reflect.DeepEqual(got, tt.expect) {
 			t.Errorf("got=%v, expect=%v", got, tt.expect)
@@ -452,9 +495,9 @@ func TestIsThisCase(t *testing.T) {
 			&LCamel{},
 			[]bool{
 				false, //   "SNAKE_CASE_VAR"
-				true, //   "snake_case_var"
-				false,  //   "CamelCaseVar"
-				false, //   "camelCaseVar"
+				false, //   "snake_case_var"
+				false, //   "CamelCaseVar"
+				true,  //   "camelCaseVar"
 				false, //   "UPPER"
 				false, //   "lower"
 				false, //   "HOGE_VAR_"

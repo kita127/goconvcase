@@ -140,9 +140,11 @@ func (c *LSnake) Decode(name string) *InterCode {
 
 // Encode *LSnake.Encode method
 func (c *LSnake) Encode(ic *InterCode) string {
-	// TODO
-	//panic(fmt.Errorf("LSnake.Encode() 未実装"))
-	return ""
+	tmp := []string{}
+	for _, v := range ic.ss {
+		tmp = append(tmp, strings.ToLower(v))
+	}
+	return strings.Join(tmp, "_")
 }
 
 // IsThisCase *LSnake.IsThisCase method
@@ -171,9 +173,22 @@ type LCamel struct{}
 
 // Decode *LCamel.Decode method
 func (c *LCamel) Decode(name string) *InterCode {
-	// TODO
-	//panic(fmt.Errorf("LCamel.Decode() 未実装"))
-	return nil
+	s := []rune(name)
+	head := 0
+	last := 1
+	ic := &InterCode{}
+	for _, c := range s[1:] {
+		if unicode.IsUpper(c) {
+			word := strings.ToLower(string(s[head:last]))
+			head = last
+			ic.ss = append(ic.ss, string(word))
+		}
+		last++
+	}
+	word := strings.ToLower(string(s[head:last]))
+	ic.ss = append(ic.ss, string(word))
+
+	return ic
 }
 
 // Encode *LCamel.Encode method
@@ -186,23 +201,21 @@ func (c *LCamel) Encode(ic *InterCode) string {
 	return strings.Join(ss, "")
 }
 
-// IsThisCase *LSnake.IsThisCase method
+// IsThisCase *LCamel.IsThisCase method
 func (c *LCamel) IsThisCase(name string) bool {
-	if name == "_" {
+	if len([]byte(name)) <= 1 {
+		// 1文字
 		return false
 	}
-	ss := strings.Split(name, "_")
-	if ss[0] == "" || ss[len(ss)-1] == "" {
+	if strings.Contains(name, "_") {
 		return false
 	}
-	if len(ss) > 1 {
-		s := strings.Join(ss, "")
-		for _, c := range []rune(s) {
-			if !unicode.IsLower(c) {
-				return false
+	if first := []rune(name)[0]; unicode.IsLower(first) {
+		for _, c := range []rune(name)[1:] {
+			if unicode.IsUpper(c) {
+				return true
 			}
 		}
-		return true
 	}
 	return false
 }
