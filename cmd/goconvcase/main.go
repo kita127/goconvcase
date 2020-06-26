@@ -90,6 +90,8 @@ func putCaseList() {
 	}{
 		{US, "UPPER_SNAKE_CASE like this."},
 		{UC, "UpperCamelCase like this."},
+		{LS, "lower_snake_case like this."},
+		{LC, "lowerCamelCase like this."},
 	}
 
 	for _, v := range li {
