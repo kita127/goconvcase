@@ -2,7 +2,6 @@ package goconvcase
 
 import (
 	"bytes"
-	"fmt"
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -142,7 +141,7 @@ func (c *LSnake) Decode(name string) *InterCode {
 // Encode *LSnake.Encode method
 func (c *LSnake) Encode(ic *InterCode) string {
 	// TODO
-	panic(fmt.Errorf("LSnake.Encode() 未実装"))
+	//panic(fmt.Errorf("LSnake.Encode() 未実装"))
 	return ""
 }
 
@@ -173,7 +172,7 @@ type LCamel struct{}
 // Decode *LCamel.Decode method
 func (c *LCamel) Decode(name string) *InterCode {
 	// TODO
-	panic(fmt.Errorf("LCamel.Decode() 未実装"))
+	//panic(fmt.Errorf("LCamel.Decode() 未実装"))
 	return nil
 }
 
@@ -189,8 +188,22 @@ func (c *LCamel) Encode(ic *InterCode) string {
 
 // IsThisCase *LSnake.IsThisCase method
 func (c *LCamel) IsThisCase(name string) bool {
-	// TODO
-	panic(fmt.Errorf("LCamel.IsThisCase 未実装"))
+	if name == "_" {
+		return false
+	}
+	ss := strings.Split(name, "_")
+	if ss[0] == "" || ss[len(ss)-1] == "" {
+		return false
+	}
+	if len(ss) > 1 {
+		s := strings.Join(ss, "")
+		for _, c := range []rune(s) {
+			if !unicode.IsLower(c) {
+				return false
+			}
+		}
+		return true
+	}
 	return false
 }
 

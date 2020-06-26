@@ -134,6 +134,56 @@ func lowerCamelFunc() {
 	}
 }
 
+func TestConvertCaseLCtoLS(t *testing.T) {
+	testTbl := []struct {
+		comment string
+		src     string
+		expect  string
+	}{
+		{"test convert 1",
+			inputSrc,
+			`package hoge
+
+var UPPER_SNAKE_VAR int
+var lower_snake_var int
+var UpperCamelVar int
+var lower_camel_var int
+
+const UPPER_SNAKE_CONST int = 0
+const lower_snake_const int = 0
+const UpperCamelConst int = 0
+const lower_camel_const int = 0
+
+func UPPER_SNAKE_FUNC() {
+	LOCAL_VAR := 0
+}
+
+func lower_snake_func() {
+	local_var := 0
+}
+
+func UpperCamelFunc() {
+	LocalVar := 0
+}
+
+func lower_camel_func() {
+	local_var := 0
+}
+`,
+		},
+	}
+
+	for _, tt := range testTbl {
+		got, err := ConvertCase(tt.src, LowerCamel, LowerSnake)
+		if err != nil {
+			t.Error(err)
+		}
+		if got != tt.expect {
+			t.Errorf("got=%v, expect=%v", got, tt.expect)
+		}
+	}
+}
+
 func TestConvertCaseUCtoUS(t *testing.T) {
 	testTbl := []struct {
 		comment string
@@ -385,6 +435,25 @@ func TestIsThisCase(t *testing.T) {
 				false, //   "SNAKE_CASE_VAR"
 				false, //   "snake_case_var"
 				true,  //   "CamelCaseVar"
+				false, //   "camelCaseVar"
+				false, //   "UPPER"
+				false, //   "lower"
+				false, //   "HOGE_VAR_"
+				false, //   "_HOGE_VAR"
+				false, //   "hoge_var_"
+				false, //   "_hoge_var"
+				false, //   "C"
+				false, //   "c"
+				false, //   "_"
+			},
+		},
+		{
+			"Is this LowerCamel?",
+			&LCamel{},
+			[]bool{
+				false, //   "SNAKE_CASE_VAR"
+				true, //   "snake_case_var"
+				false,  //   "CamelCaseVar"
 				false, //   "camelCaseVar"
 				false, //   "UPPER"
 				false, //   "lower"
