@@ -116,6 +116,10 @@ func (c *UCamel) Encode(ic *InterCode) string {
 // IsThisCase *UCamel.IsThisCase method
 func (c *UCamel) IsThisCase(name string) bool {
 	if len([]byte(name)) <= 1 {
+		// 1文字
+		return false
+	}
+	if strings.Contains(name, "_") {
 		return false
 	}
 	first := []rune(name)[0]

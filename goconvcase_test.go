@@ -427,6 +427,9 @@ func TestIsThisCase(t *testing.T) {
 		"_hoge_var",
 		"C",
 		"c",
+		"Mix_Case_Var",
+		"Mix_case_var",
+		"mix_Case_Var",
 		"_"}
 	testTbl := []struct {
 		comment string
@@ -449,6 +452,9 @@ func TestIsThisCase(t *testing.T) {
 				false, //   "_hoge_var"
 				false, //   "C"
 				false, //   "c"
+				false, //   "Mix_Case_Var",
+				false, //   "Mix_case_var",
+				false, //   "mix_Case_Var",
 				false, //   "_"
 			},
 		},
@@ -468,6 +474,9 @@ func TestIsThisCase(t *testing.T) {
 				false, //   "_hoge_var"
 				false, //   "C"
 				false, //   "c"
+				false, //   "Mix_Case_Var",
+				false, //   "Mix_case_var",
+				false, //   "mix_Case_Var",
 				false, //   "_"
 			},
 		},
@@ -487,6 +496,9 @@ func TestIsThisCase(t *testing.T) {
 				false, //   "_hoge_var"
 				false, //   "C"
 				false, //   "c"
+				false, //   "Mix_Case_Var",
+				false, //   "Mix_case_var",
+				false, //   "mix_Case_Var",
 				false, //   "_"
 			},
 		},
@@ -506,6 +518,9 @@ func TestIsThisCase(t *testing.T) {
 				false, //   "_hoge_var"
 				false, //   "C"
 				false, //   "c"
+				false, //   "Mix_Case_Var",
+				false, //   "Mix_case_var",
+				false, //   "mix_Case_Var",
 				false, //   "_"
 			},
 		},
