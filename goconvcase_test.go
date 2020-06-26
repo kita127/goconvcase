@@ -22,6 +22,8 @@ const const_var = 999
 
 func silence_kid() {
 	hiyoko := "ひよこ"
+	xxx_ := 20
+	_yyy := 30
 }
 `,
 			`package hoge
@@ -34,6 +36,8 @@ const constVar = 999
 
 func silenceKid() {
 	hiyoko := "ひよこ"
+	xxx_ := 20
+	_yyy := 30
 }
 `,
 		},
@@ -67,6 +71,8 @@ const CONST_VAR = 999
 
 func SILENCE_KID() {
 	HIYOKO := "ひよこ"
+	XXX_ := 20
+	_YYY := 30
 }
 `,
 			`package hoge
@@ -79,6 +85,8 @@ const ConstVar = 999
 
 func SilenceKid() {
 	HIYOKO := "ひよこ"
+	XXX_ := 20
+	_YYY := 30
 }
 `,
 		},
