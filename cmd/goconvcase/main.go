@@ -66,6 +66,8 @@ func main() {
 	} else {
 		fmt.Println(res)
 	}
+
+	os.Exit(0)
 }
 
 func validateCase(s string) (conv.CaseType, error) {
