@@ -1,6 +1,8 @@
 # goconvcase ![Go](https://github.com/kita127/goconvcase/workflows/Go/badge.svg?branch=kita127-patch-1)
 goconvcase transforms the case of an identifier.
 
+![image](https://github.com/kita127/goconvcase/images/image.gif)
+
 ## Installation
 
     go get github.com/kita127/goconvcase/cmd/goconvcase
